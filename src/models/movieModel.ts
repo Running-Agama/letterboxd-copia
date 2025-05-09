@@ -2,7 +2,7 @@ export interface Movie {
   title: string;
   year: string;
   genre: string;
-
+  Poster: string
 }
 
 export interface MovieListItem {

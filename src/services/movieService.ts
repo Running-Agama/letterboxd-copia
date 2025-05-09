@@ -13,7 +13,6 @@ export default class MovieService {
 
     public async searchMovies(title: string): Promise<Movie[]> {
 
-        console.log(this.apiKey)
         try {
             const response = await axios.get(this.baseUrl, {
                 params: {
@@ -22,10 +21,26 @@ export default class MovieService {
                     type: 'movie',
                 }
             });
-            return response.data;
+            const data = response.data.Search?.filter((movie: Movie) => movie.Poster !== 'N/A') || [];
+            return data;
         } catch (error) {
             console.error('Error fetching movies:', error);
             return[]
+        }
+    }
+
+    public async getMovieById(imdbID: string): Promise<Movie> {
+        try {
+            const response = await axios.get(this.baseUrl, {
+                params: {
+                    apikey: this.apiKey,
+                    i: imdbID,
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching movie by ID:', error);
+            throw error;
         }
     }
 }

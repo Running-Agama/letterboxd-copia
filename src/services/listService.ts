@@ -1,19 +1,27 @@
-import axios from "axios";
-import { MovieListItem } from "../models/movieModel";
-export default class ListService {
-    private baseUrl: string;
+import prisma from '../database';
 
-    constructor() {
-        this.baseUrl = 'localhost:3000/api/lists';
+class ListService {
+    public async getListsByUser(userId: number) {
+        return await prisma.list.findMany({
+            where: { userId },
+            include: { items: true },
+        });
     }
 
-    public async postList(list: MovieListItem): Promise<any> { 
-        try{
-            //logica do banco de dados 
-        }
-        catch (error) {
-            console.error('Error posting list:', error);
-            return null;
-        }
+    public async addMovieToList(listId: number, movieId: string) {
+        return await prisma.listItem.create({
+            data: { listId, movieId },
+        });
+    }
+
+    public async deleteList(listId: number) {
+        await prisma.listItem.deleteMany({ where: { listId } });
+        return await prisma.list.delete({ where: { id: listId } });
+    }
+
+    public async createList(data: any) {
+        return await prisma.list.create({ data });
     }
 }
+
+export default new ListService();
