@@ -1,21 +1,46 @@
+import { get } from 'http';
 import prisma from '../database';
+import UserValidation from '../validation/profileValidation';
+class UserService {
 
-class ProfileService {
-    public async createProfile(data: any) {
-        return await prisma.profile.create({ data });
+
+    async getUserById(id: number) {
+        return await prisma.user.findUnique({ where: { id } });
+    }
+    public async getUserByEmail(email: string) {
+        return await prisma.user.findUnique({ where: { email } });
+    }
+    async createUser(data: any) {
+
+        try 
+        {
+            await UserValidation.validateUserData(data);
+            const user = await this.getUserByEmail(data.email);
+
+            if (user) {
+                throw new Error('User with this email already exists');
+            }
+            else{
+                await prisma.user.create({ data });
+                return "User created successfully";
+            }
+        }
+        catch (error) 
+        {
+            return error;
+        }
+
     }
 
-    public async getProfileById(id: number) {
-        return await prisma.profile.findUnique({ where: { id } });
+
+
+    async updateUser(id: number, data: any) {
+        return await prisma.user.update({ where: { id }, data });
     }
 
-    public async updateProfile(id: number, data: any) {
-        return await prisma.profile.update({ where: { id }, data });
-    }
-
-    public async deleteProfile(id: number) {
-        return await prisma.profile.delete({ where: { id } });
+    async deleteUser(id: number) {
+        return await prisma.user.delete({ where: { id } });
     }
 }
 
-export default new ProfileService();
+export default new UserService();

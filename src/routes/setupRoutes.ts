@@ -1,9 +1,9 @@
-import { setProfileRoutes } from './profileRoutes';
+import { setUserRoutes } from './profileRoutes';
 import { setListRoutes } from './listRoutes';
 import { setMovieRoutes } from './movieRoutes';
 
 export const setupRoutes = (app: any) => {
-    setProfileRoutes(app);
+    setUserRoutes(app);
     setListRoutes(app);
     setMovieRoutes(app);
 };

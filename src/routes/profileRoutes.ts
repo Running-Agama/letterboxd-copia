@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import ProfileController from '../controllers/profileController';
+import UserController from '../controllers/profileController';
 
 const router = Router();
-const profileController = new ProfileController();
+const userController = new UserController();
 
-export const setProfileRoutes = (app: any) => {
-    app.use('/api/profile', router);
+export const setUserRoutes = (app: any) => {
+    app.use('/api/user', router);
 
-    router.post('/', profileController.createProfile);
-    router.get('/:id', profileController.getProfile);
-    router.put('/:id', profileController.updateProfile);
-    router.delete('/:id', profileController.deleteProfile);
+    router.post('/', userController.createUser);
+    router.get('/:id', userController.getUser);
+    router.put('/:id', userController.updateUser);
+    router.delete('/:id', userController.deleteUser);
 };

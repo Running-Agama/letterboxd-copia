@@ -1,54 +1,54 @@
 import { Request, Response } from 'express';
-import profileService from '../services/profileService';
+import userService from '../services/profileService';
 
-class ProfileController {
-    public createProfile = async (req: Request, res: Response): Promise<void> => {
+class UserController {
+    public createUser = async (req: Request, res: Response): Promise<void> => {
         try {
-            const profile = await profileService.createProfile(req.body);
-            res.status(201).json(profile);
+            const user = await userService.createUser(req.body);
+            res.status(201).json(user);
         } catch (error) {
-            res.status(500).json({ message: 'Error creating profile', error });
+            res.status(500).json({ message: 'Error creating user', error });
         }
     };
 
-    public getProfile = async (req: Request, res: Response): Promise<void> => {
+    public getUser = async (req: Request, res: Response): Promise<void> => {
         try {
-            const profile = await profileService.getProfileById(Number(req.params.id));
-            if (!profile) {
-                res.status(404).json({ message: 'Profile not found' });
+            const user = await userService.getUserById(Number(req.params.id));
+            if (!user) {
+                res.status(404).json({ message: 'User not found' });
                 return;
             }
-            res.status(200).json(profile);
+            res.status(200).json(user);
         } catch (error) {
-            res.status(500).json({ message: 'Error fetching profile', error });
+            res.status(500).json({ message: 'Error fetching user', error });
         }
     };
 
-    public updateProfile = async (req: Request, res: Response): Promise<void> => {
+    public updateUser = async (req: Request, res: Response): Promise<void> => {
         try {
-            const updated = await profileService.updateProfile(Number(req.params.id), req.body);
+            const updated = await userService.updateUser(Number(req.params.id), req.body);
             if (!updated) {
-                res.status(404).json({ message: 'Profile not found' });
+                res.status(404).json({ message: 'User not found' });
                 return;
             }
-            res.status(200).json({ message: 'Profile updated successfully' });
+            res.status(200).json({ message: 'User updated successfully' });
         } catch (error) {
-            res.status(500).json({ message: 'Error updating profile', error });
+            res.status(500).json({ message: 'Error updating user', error });
         }
     };
 
-    public deleteProfile = async (req: Request, res: Response): Promise<void> => {
+    public deleteUser = async (req: Request, res: Response): Promise<void> => {
         try {
-            const deleted = await profileService.deleteProfile(Number(req.params.id));
+            const deleted = await userService.deleteUser(Number(req.params.id));
             if (!deleted) {
-                res.status(404).json({ message: 'Profile not found' });
+                res.status(404).json({ message: 'User not found' });
                 return;
             }
-            res.status(200).json({ message: 'Profile deleted successfully' });
+            res.status(200).json({ message: 'User deleted successfully' });
         } catch (error) {
-            res.status(500).json({ message: 'Error deleting profile', error });
+            res.status(500).json({ message: 'Error deleting user', error });
         }
     };
 }
 
-export default ProfileController;
+export default UserController;
