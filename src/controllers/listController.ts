@@ -1,7 +1,19 @@
 import listService from '../services/listService';
 
 class ListController {
-    public getListsByUser = async (req: any, res: any) => {
+
+
+    getList = async (req:any, res: any)=>{
+        try{
+            const list = await listService.getList(Number(req.params.listId));
+            res.status(200).json(list);
+        } catch (error) {
+            console.error('Error fetching lists:', error);
+            res.status(500).json({ message: "Error fetching lists", error})
+        }
+        
+    }
+    getListsByUser = async (req: any, res: any) => {
         try {
             const lists = await listService.getListsByUser(Number(req.params.userId));
             res.status(200).json(lists);
@@ -11,7 +23,7 @@ class ListController {
         }
     };
 
-    public addMovieToList = async (req: any, res: any) => {
+    addMovieToList = async (req: any, res: any) => {
         try {
             const { listId, movieId } = req.body;
             const listItem = await listService.addMovieToList(listId, movieId);
@@ -22,7 +34,7 @@ class ListController {
         }
     };
 
-    public deleteList = async (req: any, res: any) => {
+    deleteList = async (req: any, res: any) => {
         try {
             const deleted = await listService.deleteList(Number(req.params.id));
             if (!deleted) {
@@ -36,7 +48,7 @@ class ListController {
         }
     };
 
-    public createList = async (req: any, res: any) => {
+    createList = async (req: any, res: any) => {
         try {
             const list = await listService.createList(req.body);
             res.status(201).json(list);
