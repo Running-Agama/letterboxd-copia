@@ -2,34 +2,58 @@ import prisma from '../database';
 
 class ListService {
 
-
     async getList(listId: number){
-        return await prisma.list.findFirst({
-            where: {id: listId},
-            include: {items: true}
-        })
+        try {
+            const query = await prisma.list.findFirst({
+                where: {id: listId},
+                include: {items: true}
+            });
+            if(query == null){
+                return new Error('No list found with the requested ID');
+            }
+            return query;
+        } catch (error) {
+            return new Error(String(error));
+        }
     }
 
     async getListsByUser(userId: number) {
-        return await prisma.list.findMany({
-            where: { userId },
-            include: { items: true },
-        });
+        try {
+            const query = await prisma.list.findMany({
+                where: { userId },
+                include: { items: true },
+            });
+            return query;
+        } catch (error) {
+            return new Error(String(error));
+        }
     }
 
     async addMovieToList(listId: number, movieId: string) {
-        return await prisma.listItem.create({
-            data: { listId, movieId },
-        });
+        try {
+            return await prisma.listItem.create({
+                data: { listId, movieId },
+            });
+        } catch (error) {
+            return new Error(String(error));
+        }
     }
 
     async deleteList(listId: number) {
-        await prisma.listItem.deleteMany({ where: { listId } });
-        return await prisma.list.delete({ where: { id: listId } });
+        try {
+            await prisma.listItem.deleteMany({ where: { listId } });
+            return await prisma.list.delete({ where: { id: listId } });
+        } catch (error) {
+            return new Error(String(error));
+        }
     }
 
     async createList(data: any) {
-        return await prisma.list.create({ data });
+        try {
+            return await prisma.list.create({ data });
+        } catch (error) {
+            return new Error(String(error));
+        }
     }
 }
 

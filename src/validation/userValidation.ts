@@ -12,6 +12,8 @@ class UserValidation {
                 throw new Error('Username is required');
             }
     }
+
+    
 }
 
 export default new UserValidation();

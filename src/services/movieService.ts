@@ -11,8 +11,7 @@ export default class MovieService {
         this.baseUrl = 'https://www.omdbapi.com/';
     }
 
-    public async searchMovies(title: string): Promise<Movie[]> {
-
+    public async searchMovies(title: string): Promise<Movie[] | Error> {
         try {
             const response = await axios.get(this.baseUrl, {
                 params: {
@@ -24,12 +23,11 @@ export default class MovieService {
             const data = response.data.Search?.filter((movie: Movie) => movie.Poster !== 'N/A') || [];
             return data;
         } catch (error) {
-            console.error('Error fetching movies:', error);
-            return[]
+            return new Error('Error fetching movies: ' + String(error));
         }
     }
 
-    public async getMovieById(imdbID: string): Promise<Movie> {
+    public async getMovieById(imdbID: string): Promise<Movie | Error> {
         try {
             const response = await axios.get(this.baseUrl, {
                 params: {
@@ -39,8 +37,7 @@ export default class MovieService {
             });
             return response.data;
         } catch (error) {
-            console.error('Error fetching movie by ID:', error);
-            throw error;
+            return new Error('Error fetching movie by ID: ' + String(error));
         }
     }
 }

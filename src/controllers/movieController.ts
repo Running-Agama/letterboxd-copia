@@ -10,11 +10,14 @@ class MovieController {
         const { query } = req.params;
         try{
             const movies = await movieService.searchMovies(query);
-
+            if (movies instanceof Error) {
+                res.status(400).json({ message: movies.message });
+                return;
+            }
             res.status(200).json(movies);
         }
         catch (error) {
-            res.status(500).json({ message: 'Error fetching movies', error });
+            res.status(500).json({ message: 'Error fetching movies', error: String(error) });
         }
     }
 
@@ -22,9 +25,13 @@ class MovieController {
         const { query } = req.params;
         try {
             const movie = await movieService.getMovieById(query);
+            if (movie instanceof Error) {
+                res.status(400).json({ message: movie.message });
+                return;
+            }
             res.status(200).json(movie);
         } catch (error) {
-            res.status(500).json({ message: 'Error fetching movie by ID', error });
+            res.status(500).json({ message: 'Error fetching movie by ID', error: String(error) });
         }
     };
 

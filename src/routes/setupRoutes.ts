@@ -1,4 +1,4 @@
-import { setUserRoutes } from './profileRoutes';
+import { setUserRoutes } from './userRoutes';
 import { setListRoutes } from './listRoutes';
 import { setMovieRoutes } from './movieRoutes';
 
